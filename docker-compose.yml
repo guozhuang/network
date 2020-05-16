@@ -1,0 +1,13 @@
+version: '2'
+networks:
+  basic:
+services:
+  world:
+    container_name: world
+    image: sayhello
+    ports:
+      - "9000:9000"
+    volumes:
+      - /Users/guozhuang/docker/gin/src/network:/go/src/SayHello:rw
+    networks:
+      - basic

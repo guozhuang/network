@@ -2,56 +2,12 @@ project for go-gin-web
 
 
 docker化本地mock数据，设计相应的构建流程：
-使用docker安装一个和mysql交互的简单容器镜像。
-docker run -d --name mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=123456 -v /Users/guozhuang/mysql/data:/var/lib/mysql mysql
-
-启动一个mysql的client来进行mysql的连接：
-docker run -it --network host --rm mysql mysql -h127.0.0.1 -p3306 --default-character-set=utf8mb4 -uroot -p
 
 
-【编写简单的golang+gin代码来实现对mysql的连接】
-https://blog.csdn.net/weixin_43741384/article/details/105947949
-接着编写dockerfile：
-FROM golang:1.13
-COPY . /$GOPATH/src/SayHello/
-WORKDIR /$GOPATH/src/SayHello/
-#设置环境变量，开启go module和设置下载代理，版本不同这里设置需要切换
-RUN go env -w GO111MODULE=on
-RUN go env -w GOPROXY=https://goproxy.cn,direct
-#会在当前目录生成一个go.mod文件用于包管理
-RUN go mod init
-#增加缺失的包，移除没用的包
-RUN go mod tidy
-RUN go build app.go
-EXPOSE 9000:9000
-CMD ["go","run”,”main.go"]
-#后面可以切换成相应的脚本CMD ["/bin/bash", "/go/src/script/build.sh"]
-
-然后构建相应镜像：【打包相应镜像】
-docker build -t sayhello .
-
-【打包镜像之后运行对应镜像，生成相应容器】
-使用compose进行镜像关联启动：
-docker-compose.yml
-version: '2'
-networks:
-  basic:
-services:
-  world:
-    container_name: world
-    image: sayhello
-    ports:
-      - "9000:9000"
-    volumes:
-      - /Users/guozhuang/docker/gin/src/network:/go/src/SayHello:rw
-    networks:
-      - basic
-
-
-使用指令进行启动
+标准化本地打包测试流程：
+1.使用dockerfile进行镜像构建的配置
+2.构建镜像：docker build -t sayhello .
+3.【配置docker-compose.yml文件】并使用compose进行启动容器：
 docker-compose -f docker-compose.yml up -d world
 
-
-查看启动正常
-【由此可以形成本地的编译测试的基本流程】
-【容器配置环境end】
+test ok

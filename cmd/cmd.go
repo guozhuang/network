@@ -10,10 +10,10 @@ func App() *gin.Engine {
 	r := gin.New()
 	r.Use(gin.Logger())
 
-	//环境变量获取，根据不同的环境确定加载的配置文件目录
-	isDebug := os.Getenv("DEBUG")
-	if isDebug == "1" {
-		//fmt.Println("testing")
+	//环境标准化
+	isDebug := os.Getenv("GIN_MODE")
+	if isDebug != gin.DebugMode {
+		gin.SetMode(gin.ReleaseMode)
 	}
 
 	//Dependency Injection & Route Register

@@ -16,5 +16,8 @@ type StartService struct {
 
 func (s *StartService) Say(message string) string {
 	//这样就实现内部的一层注入写法
+
+	//
+
 	return s.Repo.Speak(message)
 }

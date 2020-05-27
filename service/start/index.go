@@ -1,23 +1,28 @@
 package start
 
 import (
-	"network/repository/start"
+	"network/repository"
 )
 
-//声明服务的接口
+var repo repository.Repo
+
+//定义自己的interface，将整个包的方法规范
 type IStartService interface {
-	Say(message string) string
+	say(string) string
+	Speak(string) string
 }
 
-type StartService struct {
-	//将要使用的repo进行注入
-	Repo start.IStartRepo `inject:""`
+type Service struct {
+	//引入外部的反射接口
+	Repo repository.IRepo `inject:""`
 }
 
-func (s *StartService) Say(message string) string {
-	//这样就实现内部的一层注入写法
+func (s *Service) Say(message string) string {
+	//可以使用链式调用的方式进行处理
+	return repo.GetRepoModel().Start.Speak(message)
+}
 
-	//
-
-	return s.Repo.Speak(message)
+func (s *Service) Speak(message string) string {
+	//可以使用链式调用的方式进行处理
+	return repo.GetRepoModel().Start.Speak(message)
 }

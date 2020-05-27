@@ -3,8 +3,8 @@ package router
 import (
 	"log"
 	controller "network/controller/start"
-	repository "network/repository/start"
-	service "network/service/start"
+	"network/repository"
+	"network/service"
 
 	"github.com/facebookgo/inject"
 	"github.com/gin-gonic/gin"
@@ -19,8 +19,8 @@ func Configure(app *gin.Engine) {
 	var injector inject.Graph
 	err := injector.Provide(
 		&inject.Object{Value: &index},
-		&inject.Object{Value: &repository.StartRepo{}},
-		&inject.Object{Value: &service.StartService{}},
+		&inject.Object{Value: &repository.Repo{}},
+		&inject.Object{Value: &service.Service{}},
 	)
 	if err != nil {
 		log.Fatal("inject fatal: ", err)
@@ -29,6 +29,7 @@ func Configure(app *gin.Engine) {
 		log.Fatal("inject fatal: ", err)
 	}
 
+	//通用的路由配置
 	v1 := app.Group("/")
 	{
 		v1.GET("/get/:msg", index.GetName)

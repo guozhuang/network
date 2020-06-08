@@ -5,16 +5,26 @@ import (
 	"network/service"
 )
 
-type Index struct {
-	Service service.IService `inject:""`
+type IIndexer interface {
+	GetName(ctx *gin.Context)
 }
 
-//此处方法还可以进行封装
+var srv *service.Srv
+
+func init() {
+	//将需要加载的model进行依赖注入
+	service := &service.Srv{}
+
+	srv = service.SrvInject()
+}
+
+type Index struct {
+}
+
 func (i *Index) GetName(ctx *gin.Context) {
 	var message = ctx.Param("msg")
 
-	result := i.Service.GetSrvModel().Start.Say(message)
-	result += i.Service.GetSrvModel().Start.Speak(message)
-	result += i.Service.GetSrvModel().App.Say(message)
+	result := srv.Start.Say(message)
+
 	ctx.JSON(200, result)
 }

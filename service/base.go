@@ -1,22 +1,38 @@
 package service
 
 import (
-	"network/service/app"
-	"network/service/start"
+	"network/utils/inject"
+	"reflect"
 )
 
 //srv 基础包
-type IService interface {
-	//使用标准中转方式来实现对内部包的服务的转发？
-	GetSrvModel() *Service
+
+type Srv struct {
+	Start IStartSrv `auto:"start"`
+	App   IAppSrv   `auto:"app"`
 }
 
-type Service struct {
-	Start start.Service
-	App   app.Service
-}
+func (srv *Srv) SrvInject() *Srv {
+	inject.Register("start", &Start{})
+	inject.Register("app", &App{})
 
-//实现一个工厂方法来对应相应的srv模块
-func (srv *Service) GetSrvModel() *Service {
+	inject.AutoRegister(srv)
+
+	inject.Inject()
+
+	value := reflect.ValueOf(srv)
+	if value.Kind() == reflect.Ptr {
+		value = value.Elem()
+	}
+	for i := 0; i < value.NumField(); i++ {
+		name := value.Type().Field(i).Tag.Get("auto")
+		// 获取到tag auto 的值
+		switch name {
+		case "start":
+			srv.Start = &Start{}
+		case "app":
+			srv.App = &App{}
+		}
+	}
 	return srv
 }

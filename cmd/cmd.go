@@ -1,23 +1,36 @@
 package cmd
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
+	"log"
+	"net/http"
+	"network/config"
 	"network/router"
-	"os"
 )
 
 func App() *gin.Engine {
-	r := gin.New()
-	r.Use(gin.Logger())
+	gin.SetMode(config.ServerSetting.RunMode)
 
-	//环境标准化
-	isDebug := os.Getenv("GIN_MODE")
-	if isDebug != gin.DebugMode {
-		gin.SetMode(gin.ReleaseMode)
+	r := gin.New()
+	r.Use(gin.Logger()) //gin的中间层的使用
+	r.Use(gin.Recovery())
+
+	router.Configure(r)
+
+	endPoint := fmt.Sprintf(":%d", config.ServerSetting.HttpPort)
+
+	//绑定对应的端口
+	server := &http.Server{
+		Addr:         endPoint,
+		Handler:      r,
+		ReadTimeout:  config.ServerSetting.ReadTimeout,
+		WriteTimeout: config.ServerSetting.WriteTimeout,
 	}
 
-	//Dependency Injection & Route Register
-	router.Configure(r)
+	log.Printf("[info] start http server listening %s", endPoint)
+
+	server.ListenAndServe()
 
 	return r
 }

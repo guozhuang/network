@@ -2,7 +2,21 @@ package main
 
 import (
 	"network/cmd"
+	"network/config"
+	"network/controller"
+	"network/model"
+	"network/provider"
 )
+
+func init() {
+	config.Setup()
+
+	controller.Init()
+	model.Init()
+	provider.Init()
+	//例如cc配置的初始化和持续刷新的逻辑也放在这里【并且提供相应的接口进行访问】
+	//redis的连接池的初始化
+}
 
 func main() {
 	// 创建一个默认的路由引擎

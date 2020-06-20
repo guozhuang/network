@@ -1,6 +1,7 @@
 package inject
 
 import (
+	"fmt"
 	"reflect"
 	"unsafe"
 )
@@ -48,6 +49,7 @@ func Inject() {
 		}
 		for i := 0; i < value.NumField(); i++ {
 			name := value.Type().Field(i).Tag.Get(InjectorTag)
+			fmt.Println(name)
 			temp, ok := objs[name]
 			if ok {
 				field := value.Field(i)

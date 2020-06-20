@@ -1,0 +1,1 @@
+####当前项目用来组织微服务的基本入口，转换到对应transport包，然后通过endpoint到对应的服务的model或者迁移到公共model

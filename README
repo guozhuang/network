@@ -11,3 +11,4 @@ docker化本地mock数据，设计相应的构建流程：
 docker-compose -f docker-compose.yml up -d world
 
 test ok
+gin整体框架实践【外加微服务基本框架】

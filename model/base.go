@@ -1,14 +1,20 @@
 package model
 
-import "network/model/user"
+import (
+	"network/model/user"
+	"network/utils/inject"
+)
 
 var Models = &Model{}
 
 type Model struct {
-	User *user.User
+	UserModel *user.User `auto:"userModel"`
 }
 
 func Init() {
-	//todo:后续考虑将此处的初始化动态化处理
-	Models.User = new(user.User)
+	//使用反射进行依赖注入
+	inject.Register("userModel", &user.User{})
+
+	inject.AutoRegister(Models)
+	inject.Inject()
 }

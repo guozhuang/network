@@ -12,21 +12,21 @@ var Providers = &Provider{}
 
 //基础数据层
 type Provider struct {
-	UserRedis *redis.UserRedisProvider  `auto:"userRedis"`
-	UserMongo *mongo.UserMongoProvider  `auto:"userMongo"`
-	FeedRedis *redis2.FeedRedisProvider `auto:"feedRedis"`
+	UserRedisProvider *redis.UserRedisProvider  `auto:"userRedisProvider"`
+	UserMongoProvider *mongo.UserMongoProvider  `auto:"userMongoProvider"`
+	FeedRedisProvider *redis2.FeedRedisProvider `auto:"feedRedisProvider"`
 }
 
 func Init() {
 	//始终还是需要进行注册之后进行依赖注入
-	inject.Register("userRedis", &redis.UserRedisProvider{})
-	inject.Register("feedRedis", &redis2.FeedRedisProvider{})
+	inject.Register("userRedisProvider", &redis.UserRedisProvider{})
+	inject.Register("feedRedisProvider", &redis2.FeedRedisProvider{})
 
 	inject.AutoRegister(Providers)
 	inject.Inject()
 
 	//Providers.User.Redis.Get("hello")
-	fmt.Println(Providers.UserRedis.Get("hi"))
+	fmt.Println(Providers.UserRedisProvider.Get("hi"))
 
 }
 

@@ -10,7 +10,7 @@ type User struct {
 }
 
 func (user *User) OptData(num int) int {
-	value := provider.Providers.UserRedis.Get("hello")
+	value := provider.Providers.UserRedisProvider.Get("hello")
 	fmt.Println(value)
 	return 100 + num
 }

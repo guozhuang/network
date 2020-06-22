@@ -1,8 +1,10 @@
 package user
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"math/rand"
+	"network/editor"
 	"network/model"
 	"strconv"
 )
@@ -15,8 +17,13 @@ func (user *User) GetUserInfo(c *gin.Context) {
 	userId := c.Param("userId")
 
 	data := rand.Intn(20)
-	data = model.Models.UserModel.OptData(data)
+	data = model.Ctx.UserModel.OptData(data)
 	userId += strconv.Itoa(data)
+
+	userEditor := editor.Ctx.GetUserEditor(userId)
+	fmt.Println(userEditor.UserId)
+	fmt.Println(userEditor.UserName)
+	userEditor.Save()
 
 	c.JSON(200, gin.H{"message": userId})
 }

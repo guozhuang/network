@@ -5,7 +5,7 @@ import (
 	"network/utils/inject"
 )
 
-var Models = &Model{}
+var Ctx = &Model{}
 
 type Model struct {
 	UserModel *user.User `auto:"userModel"`
@@ -15,6 +15,6 @@ func Init() {
 	//使用反射进行依赖注入
 	inject.Register("userModel", &user.User{})
 
-	inject.AutoRegister(Models)
+	inject.AutoRegister(Ctx)
 	inject.Inject()
 }

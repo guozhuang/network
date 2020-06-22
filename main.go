@@ -4,6 +4,7 @@ import (
 	"network/cmd"
 	"network/config"
 	"network/controller"
+	"network/editor"
 	"network/model"
 	"network/provider"
 )
@@ -11,6 +12,7 @@ import (
 func init() {
 	config.Setup()
 
+	editor.Init()
 	controller.Init()
 	model.Init()
 	provider.Init()

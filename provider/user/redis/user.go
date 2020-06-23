@@ -1,21 +1,27 @@
 package redis
 
-//user redis相关操作的代理方法集
+import (
+	"fmt"
+	redis "network/common/redis"
+	"network/config"
+)
 
-func init() {
-	//进行连接池配置以及初始化被调用
+type IUserRedisProvider interface {
+	Get(string) string
 }
 
 type UserRedisProvider struct {
-	//
+	ServerAddr string
 }
 
-//实现对redis的标准化操作以及相应连接池处理
+//这里进行初始化的操作并未在相应的依赖加载上生效
+func (user *UserRedisProvider) Init() {
+	user.ServerAddr = config.RedisAddrSetting.UserRedisAddr
+	//fmt.Println("init", user.ServerAddr)
+}
 
 func (user *UserRedisProvider) Get(key string) string {
-	return key
-}
-
-func (user *UserRedisProvider) Set(key, Value string) string {
-	return key
+	fmt.Println(user.ServerAddr)
+	re := redis.Commons.Get(config.RedisAddrSetting.UserRedisAddr, key)
+	return re
 }

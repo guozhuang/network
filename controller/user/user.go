@@ -17,10 +17,10 @@ func (user *User) GetUserInfo(c *gin.Context) {
 	userId := c.Param("userId")
 
 	data := rand.Intn(20)
-	data = model.Ctx.UserModel.OptData(data)
+	data = model.MCtx.UserModel.OptData(data)
 	userId += strconv.Itoa(data)
 
-	userEditor := editor.Ctx.GetUserEditor(userId)
+	userEditor := editor.ECtx.GetUserEditor(userId)
 	fmt.Println(userEditor.UserId)
 	fmt.Println(userEditor.UserName)
 	userEditor.Save()

@@ -34,6 +34,14 @@ type Redis struct {
 
 var RedisSetting = &Redis{}
 
+//实际使用的业务redis汇总【还是使用通用结构】
+type RedisAddr struct {
+	UserRedisAddr string
+	FeedRedisAddr string
+}
+
+var RedisAddrSetting = &RedisAddr{}
+
 var cfg *ini.File
 
 // Setup initialize the configuration instance
@@ -60,6 +68,7 @@ func Setup() {
 
 	mapTo("server", ServerSetting)
 	mapTo("redis", RedisSetting)
+	mapTo("redisAddr", RedisAddrSetting)
 
 	ServerSetting.ReadTimeout = ServerSetting.ReadTimeout * time.Second
 	ServerSetting.WriteTimeout = ServerSetting.WriteTimeout * time.Second

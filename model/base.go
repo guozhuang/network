@@ -2,9 +2,10 @@ package model
 
 import (
 	"network/model/user"
+	"network/utils/inject"
 )
 
-var MCtx = &Model{}
+var Ctx = &Model{}
 
 type Model struct {
 	UserModel *user.User `auto:"userModel"`
@@ -12,8 +13,8 @@ type Model struct {
 
 func Init() {
 	//使用反射进行依赖注入
-	/*inject.Register("userModel", &user.User{})
+	inject.Register("userModel", &user.User{})
 
-	inject.AutoRegister(MCtx)
-	inject.Inject()*/
+	inject.Register("model", Ctx)
+	inject.Inject()
 }

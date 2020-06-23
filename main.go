@@ -12,7 +12,7 @@ import (
 //var Container *di.Container
 
 func init() {
-	//Container = di.NewContainer()
+	//Container = di.NewContainer()//todo:后续改造成基于容器的分层结构来进行项目开发
 	//需要考虑使用各层的容易来实现对应的分层结构
 
 	config.Setup()

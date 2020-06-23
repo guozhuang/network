@@ -14,10 +14,10 @@ type UserRedisProvider struct {
 	ServerAddr string
 }
 
-//这里进行初始化的操作并未在相应的依赖加载上生效
 func (user *UserRedisProvider) Init() {
 	user.ServerAddr = config.RedisAddrSetting.UserRedisAddr
 	//fmt.Println("init", user.ServerAddr)
+	//初始化相应的服务的连接池，然后查看能否进行中转调用【一定可以】
 }
 
 func (user *UserRedisProvider) Get(key string) string {

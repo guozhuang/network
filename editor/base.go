@@ -10,6 +10,7 @@ type Editor struct {
 }
 
 func Init() {
+	//先将这里的注册设置成自动的注册机制
 	inject.Register("userEditor", &UserEditor{})
 
 	inject.Register("Editor", Ctx)
